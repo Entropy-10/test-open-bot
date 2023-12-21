@@ -1,6 +1,6 @@
+import { DiscordBot } from 'zenith'
 import env from '@env'
 import { isProd } from '@utils'
-import { DiscordBot } from 'zenith'
 
 const bot = new DiscordBot({
   startOnInitialize: false,
@@ -9,7 +9,7 @@ const bot = new DiscordBot({
   monitoring: {
     enabled: isProd,
     url: `https://uptime.betterstack.com/api/v1/heartbeat/${env.HEARTBEAT_ID}`,
-    interval: 1000 * 60 * 5
+    interval: 5
   }
 })
 

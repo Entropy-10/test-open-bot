@@ -164,7 +164,8 @@ export class DiscordBot extends Client {
         try {
           for (let attempt = 0; attempt < 5; attempt++) {
             try {
-              await fetch(url, { method })
+              const response = await fetch(url, { method })
+              if (response.ok) return
             } catch (err) {
               if (attempt === 5 - 1) throw err
               await new Promise(resolve => setTimeout(resolve, 10 * 1000))
