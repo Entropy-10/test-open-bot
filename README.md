@@ -1,4 +1,4 @@
-# Zenith Discord Bot
+# TEST Bot
 
 ![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)
@@ -15,7 +15,7 @@ TEST Bot is a small discord bot designed specifically for assisting with TEST to
 
 ## Getting Started
 
-Follow these steps to get Zenith up and running:
+Follow these steps to get TEST Bot up and running:
 
 1. **Set Environment Variables**: Ensure you've set all environment variables.
 
@@ -31,7 +31,7 @@ Follow these steps to get Zenith up and running:
    bun pushCmds
    ```
 
-4. **Start the Bot**: Run the following command to start the Zenith bot in development mode:
+4. **Start the Bot**: Run the following command to start the TEST Bot in development mode:
 
    ```shell
    bun dev
