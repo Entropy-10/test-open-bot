@@ -47,7 +47,14 @@ const envSchema = object({
   SUPABASE_SERVICE_ROLE_KEY: string([fromEnv()]),
   SUPABASE_URL: string([fromEnv()]),
   VERIFIED_ROLE: string([fromEnv()]),
-  MATCH_CHANNEL_ID: string([fromEnv()])
+  MATCH_CHANNEL_ID: string([fromEnv()]),
+  REACTION_CHANNEL_ID: string([fromEnv()]),
+  GENERAL_PING_ROLE_ID: string([fromEnv()]),
+  TOURNEY_PING_ROLE_ID: string([fromEnv()]),
+  STREAM_PING_ROLE_ID: string([fromEnv()]),
+  GIVEAWAY_PING_ROLE_ID: string([fromEnv()]),
+  CROSS_EMOJI: string([fromEnv()]),
+  MINUS_EMOJI: string([fromEnv()])
 })
 
 export default handleParse(envSchema)

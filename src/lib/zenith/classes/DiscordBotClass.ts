@@ -1,17 +1,19 @@
 import { readdir } from 'node:fs/promises'
-import { Client, ClientEvents, Collection } from 'discord.js'
+import { Client, Collection } from 'discord.js'
 
 import { Logger } from '..'
-import {
+import { ZenithErrorCodes } from '../types'
+import { interactionHandler } from '../utils/interactionHandler'
+import { ZenithError } from './ZenithErrorClass'
+
+import type { ClientEvents } from 'discord.js'
+import type {
   Command,
   Cooldown,
   DiscordBotOptions,
   Event,
-  EventOptions,
-  ZenithErrorCodes
+  EventOptions
 } from '../types'
-import { interactionHandler } from '../utils/interactionHandler'
-import { ZenithError } from './ZenithErrorClass'
 
 export class DiscordBot extends Client {
   startOnInitialize: DiscordBotOptions['startOnInitialize']

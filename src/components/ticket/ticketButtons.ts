@@ -1,9 +1,6 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonInteraction,
-  ButtonStyle
-} from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+
+import type { ButtonInteraction } from 'discord.js'
 
 export function createTicketButtonRow(interaction?: ButtonInteraction) {
   const id = interaction?.customId

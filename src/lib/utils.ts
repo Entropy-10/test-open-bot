@@ -1,13 +1,8 @@
 import env from '@env'
-import {
-  channelMention,
-  Client,
-  Guild,
-  roleMention,
-  userMention
-} from 'discord.js'
+import { channelMention, roleMention, userMention } from 'discord.js'
 
-import { DiscordBot } from './zenith'
+import type { Client, Guild } from 'discord.js'
+import type { DiscordBot } from './zenith'
 
 /** Whether the environment is production. */
 export const isProd = env.NODE_ENV === 'production'
@@ -42,9 +37,7 @@ export async function uptimeRequest(
  * @param {number} index - The index of the capture group to get.
  */
 export function getMatch(string: string, regex: RegExp, index = 1) {
-  const matches = string.match(regex)
-  if (!matches) return null
-  return matches[index]
+  return string.match(regex)?.[index] ?? null
 }
 
 /**
@@ -84,15 +77,15 @@ export async function channelFetch(guild: Guild, id: string) {
  * @param {Mention} [type='user'] - The optional type of mention to be created. By default is user.
  */
 export function mention(id: string, type?: 'channel' | 'role' | 'user') {
+  if (!isProd) return id
+
   switch (type) {
     case 'channel':
-      return isProd ? channelMention(id) : id
+      return channelMention(id)
     case 'role':
-      return isProd ? roleMention(id) : id
-    case 'user':
-      return isProd ? userMention(id) : id
+      return roleMention(id)
     default:
-      return isProd ? userMention(id) : id
+      return userMention(id)
   }
 }
 

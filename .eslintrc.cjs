@@ -6,6 +6,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', '@limegrass/import-alias'],
   rules: {
+    '@typescript-eslint/consistent-type-imports': 'error',
     '@limegrass/import-alias/import-alias': [
       'error',
       {

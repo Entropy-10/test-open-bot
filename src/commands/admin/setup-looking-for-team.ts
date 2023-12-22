@@ -1,7 +1,7 @@
 import { createCommand, ephem } from 'zenith'
 import env from '@env'
-import { channelFetch } from '@utils'
 import { supabase } from '@supabase'
+import { channelFetch } from '@utils'
 import { SlashCommandBuilder } from 'discord.js'
 
 import { panelEmbed, panelRow } from '~/components/looking-for-team'

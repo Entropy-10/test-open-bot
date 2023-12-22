@@ -1,6 +1,9 @@
 import { embedColor } from '@utils'
-import { ButtonInteraction, EmbedBuilder, userMention } from 'discord.js'
-import { buildUrl, LegacyUser } from 'osu-web.js'
+import { EmbedBuilder, userMention } from 'discord.js'
+import { buildUrl } from 'osu-web.js'
+
+import type { ButtonInteraction } from 'discord.js'
+import type { LegacyUser } from 'osu-web.js'
 
 interface PostEmbedOptions {
   interaction: ButtonInteraction

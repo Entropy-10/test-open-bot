@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
+    "verbatimModuleSyntax": true,
     "types": ["bun-types"],
     "baseUrl": "src",
     "paths": {

@@ -1,10 +1,16 @@
+import { createCommand } from 'zenith'
 import env from '@env'
 import { uptimeRequest } from '@utils'
-import { Resource, StatusPage, StatusReport, UptimeDataResponse } from '@types'
 import { SlashCommandBuilder } from 'discord.js'
-import { createCommand } from 'zenith'
 
 import { createServiceEmbed, createServicesEmbed } from '~/components/status'
+
+import type {
+  Resource,
+  StatusPage,
+  StatusReport,
+  UptimeDataResponse
+} from '@types'
 
 export default createCommand({
   data: new SlashCommandBuilder()

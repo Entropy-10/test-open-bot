@@ -1,3 +1,4 @@
+import type env from '@env'
 import type { ColorResolvable } from 'discord.js'
 
 export enum Environment {
@@ -9,6 +10,8 @@ export interface StatusInfo {
   color: ColorResolvable
   emoji: string
 }
+
+export type EnvEnum = Record<string, keyof typeof env>
 
 // ------------------- Uptime Types ------------------- \\
 

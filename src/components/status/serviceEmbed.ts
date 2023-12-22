@@ -1,8 +1,13 @@
 import dayjs from 'dayjs'
 import { EmbedBuilder } from 'discord.js'
 
-import { Resource, StatusReport } from '~/types'
-import { createStatusHistory, getUptime, statusInfo } from './utils'
+import {
+  createStatusHistory,
+  getUptime,
+  statusInfo
+} from '~/components/status/utils'
+
+import type { Resource, StatusReport } from '~/types'
 
 export function createServiceEmbed(
   resource: Resource,

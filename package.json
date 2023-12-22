@@ -6,7 +6,15 @@
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
     "pushCmds": "[ -n \"$1\" ] && NODE_ENV=production GLOBAL_PUSH=true bun ./src/lib/cmds-push.ts || bun ./src/lib/cmds-push.ts",
-    "typegen": "bun supabase gen types typescript --project-id dtoyeiqtecliyympsgji > src/types/database.types.ts"
+    "typegen": "bun supabase gen types typescript --project-id dtoyeiqtecliyympsgji > src/types/database.types.ts",
+    "format:check": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "types:check": "tsc --pretty --noEmit",
+    "check": "pnpm lint:check && pnpm format:check && pnpm types:check",
+    "fix": "pnpm lint:fix && pnpm format:fix",
+    "review": "pnpm fix && pnpm check"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",

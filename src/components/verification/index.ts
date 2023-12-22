@@ -1,4 +1,2 @@
-import { verifyRow } from '~/components/verification/verify-button'
-import { verifyEmbed } from '~/components/verification/verify-embed'
-
-export { verifyEmbed, verifyRow }
+export * from '~/components/verification/verify-button'
+export * from '~/components/verification/verify-embed'

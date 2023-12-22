@@ -1,6 +1,10 @@
 import { EmbedBuilder } from 'discord.js'
 
-import { createStatusHistory, getUptime, statusInfo } from './utils'
+import {
+  createStatusHistory,
+  getUptime,
+  statusInfo
+} from '~/components/status/utils'
 
 import type { Resource, StatusPage } from '~/types'
 

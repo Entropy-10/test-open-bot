@@ -1,5 +1,3 @@
-import { DiscordBot } from '..'
-
 import type {
   BitFieldResolvable,
   ChatInputCommandInteraction,
@@ -10,6 +8,7 @@ import type {
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder
 } from 'discord.js'
+import type { DiscordBot } from '..'
 
 export type LoggerEvents = 'commands' | 'events' | 'started' | 'stopped'
 
@@ -31,10 +30,7 @@ export interface DiscordBotOptions {
 export interface EventOptions<EventType extends keyof ClientEvents> {
   name?: string
   once?: boolean
-  execute: (
-    client: DiscordBot,
-    ...args: ClientEvents[EventType]
-  ) => Promise<unknown> | unknown
+  execute: (client: DiscordBot, ...args: ClientEvents[EventType]) => void
 }
 
 export interface Command {

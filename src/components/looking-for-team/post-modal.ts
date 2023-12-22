@@ -1,10 +1,11 @@
 import {
   ActionRowBuilder,
-  ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle
 } from 'discord.js'
+
+import type { ModalActionRowComponentBuilder } from 'discord.js'
 
 const osuProfileInput = new TextInputBuilder()
   .setLabel('Osu Profile')

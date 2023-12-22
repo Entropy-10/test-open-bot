@@ -2,15 +2,11 @@ import { createCommand, ephem } from 'zenith'
 import env from '@env'
 import { embedColor, mention } from '@utils'
 import dayjs from 'dayjs'
-import {
-  EmbedBuilder,
-  ModalSubmitInteraction,
-  SlashCommandBuilder
-} from 'discord.js'
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 
 import { createTicketButtonRow, ticketModal } from '~/components/ticket'
 
-import type { GuildTextBasedChannel } from 'discord.js'
+import type { GuildTextBasedChannel, ModalSubmitInteraction } from 'discord.js'
 
 export default createCommand({
   data: new SlashCommandBuilder()

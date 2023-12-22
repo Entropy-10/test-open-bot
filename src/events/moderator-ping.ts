@@ -1,6 +1,6 @@
+import { createEvent } from 'zenith'
 import env from '@env'
 import { guildFetch, memberFetch } from '@utils'
-import { createEvent } from 'zenith'
 
 export default createEvent('messageCreate', {
   name: 'Moderator Ping',

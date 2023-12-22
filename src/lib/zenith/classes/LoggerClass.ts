@@ -1,10 +1,6 @@
-import {
-  LogBackgroundColor,
-  LogColor,
-  LoggerEvents,
-  LogOptions,
-  WarnLevel
-} from '../types'
+import { LogBackgroundColor, LogColor } from '../types'
+
+import type { LoggerEvents, LogOptions, WarnLevel } from '../types'
 
 export class Logger {
   private _bold = '\x1b[1m'

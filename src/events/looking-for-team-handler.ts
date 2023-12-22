@@ -2,11 +2,12 @@ import { createEvent, ephem } from 'zenith'
 import env from '@env'
 import { supabase } from '@supabase'
 import { getMatch, mention } from '@utils'
-import { ModalSubmitInteraction } from 'discord.js'
 import { LegacyClient } from 'osu-web.js'
 
 import { panelEmbed, panelRow, postModal } from '~/components/looking-for-team'
 import { createPostEmbed } from '~/components/looking-for-team/post-embed'
+
+import type { ModalSubmitInteraction } from 'discord.js'
 
 export default createEvent('interactionCreate', {
   name: 'Looking For Team Handler',
