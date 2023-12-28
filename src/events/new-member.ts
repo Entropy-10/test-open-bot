@@ -5,7 +5,12 @@ import { wait } from '@utils'
 export default createEvent('guildMemberAdd', {
   name: 'New Member',
   execute: async (client, member) => {
-    if (member.roles.cache.has(env.UNVERIFIED_ROLE)) return
+    if (
+      member.roles.cache.has(env.UNVERIFIED_ROLE) ||
+      member.roles.cache.has(env.VERIFIED_ROLE)
+    ) {
+      return
+    }
 
     try {
       for (let attempt = 0; attempt < 3; attempt++) {
