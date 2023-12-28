@@ -46,7 +46,6 @@ const envSchema = object({
   MODERATOR_ROLE: string([fromEnv()]),
   SUPABASE_SERVICE_ROLE_KEY: string([fromEnv()]),
   SUPABASE_URL: string([fromEnv()]),
-  VERIFIED_ROLE: string([fromEnv()]),
   MATCH_CHANNEL_ID: string([fromEnv()]),
   REACTION_CHANNEL_ID: string([fromEnv()]),
   GENERAL_PING_ROLE_ID: string([fromEnv()]),

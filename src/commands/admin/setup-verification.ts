@@ -1,4 +1,4 @@
-import { createCommand } from 'zenith'
+import { createCommand, ephem } from 'zenith'
 import { SlashCommandBuilder } from 'discord.js'
 
 import { verifyEmbed, verifyRow } from '~/components/verification'
@@ -9,6 +9,16 @@ export default createCommand({
     .setName('setup-verification')
     .setDescription('Setup the verification system for your server.'),
   async execute({ interaction }) {
-    await interaction.reply({ embeds: [verifyEmbed], components: [verifyRow] })
+    const channel = interaction.channel
+    if (!channel) {
+      return await interaction.reply(ephem('Failed to get channel!'))
+    }
+
+    await channel.send({
+      embeds: [verifyEmbed],
+      components: [verifyRow]
+    })
+
+    await interaction.reply(ephem('Verification is now setup!'))
   }
 })
