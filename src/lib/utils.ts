@@ -17,16 +17,17 @@ export const embedColor = '#5E72EB'
  * @param {string} [apiVersion=v2] - The version of the API to use.
  */
 export async function uptimeRequest(
-  endpoint: string,
-  apiVersion: 'v1' | 'v2' = 'v2'
+	endpoint: string,
+	apiVersion: 'v1' | 'v2' = 'v2'
 ) {
-  if (endpoint.startsWith('/')) endpoint = endpoint.slice(1)
-  const response = await fetch(
-    `https://uptime.betterstack.com/api/${apiVersion}/${endpoint}`,
-    { headers: { Authorization: `Bearer ${env.UPTIME_API_KEY}` } }
-  )
+	const response = await fetch(
+		`https://uptime.betterstack.com/api/${apiVersion}/${
+			endpoint.startsWith('/') ? endpoint.slice(1) : endpoint
+		}`,
+		{ headers: { Authorization: `Bearer ${env.UPTIME_API_KEY}` } }
+	)
 
-  return await response.json()
+	return await response.json()
 }
 
 /**
@@ -37,7 +38,7 @@ export async function uptimeRequest(
  * @param {number} index - The index of the capture group to get.
  */
 export function getMatch(string: string, regex: RegExp, index = 1) {
-  return string.match(regex)?.[index] ?? null
+	return string.match(regex)?.[index] ?? null
 }
 
 /**
@@ -47,7 +48,7 @@ export function getMatch(string: string, regex: RegExp, index = 1) {
  * @param id - The id of the guild to fetch.
  */
 export async function guildFetch(client: DiscordBot | Client, id: string) {
-  return client.guilds.cache.get(id) ?? (await client.guilds.fetch(id))
+	return client.guilds.cache.get(id) ?? (await client.guilds.fetch(id))
 }
 
 /**
@@ -57,7 +58,7 @@ export async function guildFetch(client: DiscordBot | Client, id: string) {
  * @param id - The id of the member to fetch.
  */
 export async function memberFetch(guild: Guild, id: string) {
-  return guild.members.cache.get(id) ?? (await guild.members.fetch(id))
+	return guild.members.cache.get(id) ?? (await guild.members.fetch(id))
 }
 
 /**
@@ -67,7 +68,7 @@ export async function memberFetch(guild: Guild, id: string) {
  * @param id - The id of the channel to fetch.
  */
 export async function channelFetch(guild: Guild, id: string) {
-  return guild.channels.cache.get(id) ?? (await guild.channels.fetch(id))
+	return guild.channels.cache.get(id) ?? (await guild.channels.fetch(id))
 }
 
 /**
@@ -77,16 +78,16 @@ export async function channelFetch(guild: Guild, id: string) {
  * @param {Mention} [type='user'] - The optional type of mention to be created. By default is user.
  */
 export function mention(id: string, type?: 'channel' | 'role' | 'user') {
-  if (!isProd) return id
+	if (!isProd) return id
 
-  switch (type) {
-    case 'channel':
-      return channelMention(id)
-    case 'role':
-      return roleMention(id)
-    default:
-      return userMention(id)
-  }
+	switch (type) {
+		case 'channel':
+			return channelMention(id)
+		case 'role':
+			return roleMention(id)
+		default:
+			return userMention(id)
+	}
 }
 
 /**
@@ -95,5 +96,5 @@ export function mention(id: string, type?: 'channel' | 'role' | 'user') {
  * @param {number} ms - The amount of time to wait in milliseconds.
  */
 export async function wait(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+	return new Promise(resolve => setTimeout(resolve, ms))
 }

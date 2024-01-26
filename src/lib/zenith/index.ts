@@ -1,7 +1,7 @@
 import {
-  createCommand,
-  createEvent,
-  DiscordBot
+	DiscordBot,
+	createCommand,
+	createEvent
 } from './classes/DiscordBotClass'
 import { Logger } from './classes/LoggerClass'
 import { ZenithError } from './classes/ZenithErrorClass'

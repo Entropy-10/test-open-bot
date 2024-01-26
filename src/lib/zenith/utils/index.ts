@@ -1,7 +1,7 @@
 import type {
-  BaseMessageOptions,
-  InteractionReplyOptions,
-  MessagePayload
+	BaseMessageOptions,
+	InteractionReplyOptions,
+	MessagePayload
 } from 'discord.js'
 
 /**
@@ -10,9 +10,9 @@ import type {
  * @param {string | Omit<BaseMessageOptions, 'content'>} content - The message content to send.
  */
 export function ephem(
-  content: string | Omit<BaseMessageOptions, 'content'>
+	content: string | Omit<BaseMessageOptions, 'content'>
 ): MessagePayload | InteractionReplyOptions {
-  return typeof content === 'string'
-    ? { content, ephemeral: true }
-    : { ...content, ephemeral: true }
+	return typeof content === 'string'
+		? { content, ephemeral: true }
+		: { ...content, ephemeral: true }
 }
