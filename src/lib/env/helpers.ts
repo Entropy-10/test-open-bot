@@ -35,3 +35,11 @@ export function fromEnv() {
 		return { output: transformedInput }
 	}
 }
+
+// export type FromEnvTransformer<TInput extends string> = BaseTransformation<TInput>
+
+// export function newFromEnv<TInput extends string>(): FromEnvTransformer<TInput> {
+// 	return {
+
+// 	}
+// }
