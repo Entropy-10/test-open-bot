@@ -11,6 +11,10 @@ export const statusInfo: Record<string, StatusInfo> = {
 		color: '#10B981',
 		emoji: env.OPERATIONAL_EMOJI
 	},
+	recovered: {
+		color: '#10B981',
+		emoji: env.DOWNTIME_EMOJI
+	},
 	downtime: {
 		color: '#F87171',
 		emoji: env.DOWNTIME_EMOJI

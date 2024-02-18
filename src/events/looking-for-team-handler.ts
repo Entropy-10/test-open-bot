@@ -21,20 +21,22 @@ export default createEvent('interactionCreate', {
 		}
 
 		if (interaction.customId === 'delete-post') {
-			const { error: postSelectError, data: post } = await supabase
-				.from('looking-for-team-post')
+			const { error: playerSelectError, data: player } = await supabase
+				.from('free-players')
 				.select()
-				.eq('user_id', interaction.user.id)
+				.eq('discord_id', interaction.user.id)
 				.maybeSingle()
 
-			if (postSelectError) {
+			if (playerSelectError) {
 				postCreateError()
-				return logger.error(`Failed to select post: ${postSelectError.message}`)
+				return logger.error(
+					`Failed to select post: ${playerSelectError.message}`
+				)
 			}
 
-			if (post) {
+			if (player) {
 				const existingPostMessage = await interaction.channel.messages
-					.fetch(post.message_id)
+					.fetch(player.message_id)
 					.catch(err => {
 						postCreateError()
 						return logger.error(`Failed to fetch post message: ${err.message}`)
@@ -42,9 +44,9 @@ export default createEvent('interactionCreate', {
 
 				existingPostMessage?.delete()
 				await supabase
-					.from('looking-for-team-post')
+					.from('free-players')
 					.delete()
-					.eq('user_id', interaction.user.id)
+					.eq('discord_id', interaction.user.id)
 
 				await interaction.reply(ephem('Successfully deleted posts.'))
 			}
@@ -123,20 +125,20 @@ export default createEvent('interactionCreate', {
 			return
 		}
 
-		const { error: postSelectError, data: post } = await supabase
-			.from('looking-for-team-post')
+		const { error: playerSelectError, data: player } = await supabase
+			.from('free-players')
 			.select()
-			.eq('user_id', interaction.user.id)
+			.eq('discord_id', interaction.user.id)
 			.maybeSingle()
 
-		if (postSelectError) {
+		if (playerSelectError) {
 			postCreateError()
-			return logger.error(`Failed to select post: ${postSelectError.message}`)
+			return logger.error(`Failed to select post: ${playerSelectError.message}`)
 		}
 
-		if (post) {
+		if (player) {
 			const existingPostMessage = await interaction.channel.messages
-				.fetch(post.message_id)
+				.fetch(player.message_id)
 				.catch(err => {
 					postCreateError()
 					return logger.error(`Failed to fetch post message: ${err.message}`)
@@ -157,18 +159,22 @@ export default createEvent('interactionCreate', {
 			]
 		})
 
-		const { error: postInsertError } = await supabase
-			.from('looking-for-team-post')
+		const { error: playerInsertError } = await supabase
+			.from('free-players')
 			.insert({
+				osu_id: String(user.user_id),
+				discord_id: interaction.user.id,
+				discord_name: interaction.user.username,
+				rank: user.pp_rank,
+				timezone: `UTC${timezone}`,
 				message_id: postMessage.id,
-				user_id: interaction.user.id,
 				updated_at: new Date().toISOString()
 			})
 
-		if (postInsertError) {
+		if (playerInsertError) {
 			postCreateError()
 			await postMessage.delete()
-			return logger.error(`Failed to insert post: ${postInsertError.message}`)
+			return logger.error(`Failed to insert post: ${playerInsertError.message}`)
 		}
 
 		const { error: panelSelectError, data: panel } = await supabase
