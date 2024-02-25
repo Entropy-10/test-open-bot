@@ -54,7 +54,8 @@ const envSchema = object({
 	STREAM_PING_ROLE_ID: string([fromEnv()]),
 	GIVEAWAY_PING_ROLE_ID: string([fromEnv()]),
 	CROSS_EMOJI: string([fromEnv()]),
-	MINUS_EMOJI: string([fromEnv()])
+	MINUS_EMOJI: string([fromEnv()]),
+	X_TOKEN: string([fromEnv()])
 })
 
 export default handleParse(envSchema)
