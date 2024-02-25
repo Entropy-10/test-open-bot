@@ -1,7 +1,11 @@
 import { embedColor } from '@utils'
 import dayjs from 'dayjs'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
-import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
+import {
+	EmbedBuilder,
+	PermissionFlagsBits,
+	SlashCommandBuilder
+} from 'discord.js'
 import { createCommand, ephem } from 'zenith'
 
 dayjs.extend(LocalizedFormat)
@@ -11,19 +15,20 @@ export default createCommand({
 	data: new SlashCommandBuilder()
 		.setName('send-embed')
 		.setDescription('Used for sending basic description only embeds.')
-		.addStringOption(option =>
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.addStringOption((option) =>
 			option
 				.setName('title')
 				.setDescription('The title of the embed.')
 				.setRequired(true)
 		)
-		.addStringOption(option =>
+		.addStringOption((option) =>
 			option
 				.setName('content')
 				.setDescription('The content of the embed.')
 				.setRequired(true)
 		)
-		.addBooleanOption(option =>
+		.addBooleanOption((option) =>
 			option
 				.setName('modified-date')
 				.setDescription(

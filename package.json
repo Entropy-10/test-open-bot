@@ -25,7 +25,6 @@
     "google-auth-library": "^9.6.3",
     "google-spreadsheet": "^4.1.1",
     "osu-web.js": "^1.4.0",
-    "twitter-api-v2": "^1.16.0",
     "valibot": "^0.20.0"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@ const envSchema = object({
 	LOG_SOURCE_TOKEN: string([fromEnv()]),
 	CLIENT_ID: string([fromEnv()]),
 	GLOBAL_PUSH: optional(
-		coerce(boolean(), i => i === 'true'),
+		coerce(boolean(), (i) => i === 'true'),
 		false
 	),
 	DEV_GUILD: string([fromEnv()]),
@@ -53,9 +53,9 @@ const envSchema = object({
 	TOURNEY_PING_ROLE_ID: string([fromEnv()]),
 	STREAM_PING_ROLE_ID: string([fromEnv()]),
 	GIVEAWAY_PING_ROLE_ID: string([fromEnv()]),
+	SOCIAL_PING_ROLE_ID: string([fromEnv()]),
 	CROSS_EMOJI: string([fromEnv()]),
-	MINUS_EMOJI: string([fromEnv()]),
-	X_TOKEN: string([fromEnv()])
+	MINUS_EMOJI: string([fromEnv()])
 })
 
 export default handleParse(envSchema)

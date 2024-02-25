@@ -13,7 +13,8 @@ export default createEvent('interactionCreate', {
 					general = 'GENERAL_PING_ROLE_ID',
 					tourney = 'TOURNEY_PING_ROLE_ID',
 					stream = 'STREAM_PING_ROLE_ID',
-					giveaway = 'GIVEAWAY_PING_ROLE_ID'
+					giveaway = 'GIVEAWAY_PING_ROLE_ID',
+					social = 'SOCIAL_PING_ROLE_ID'
 				}
 
 				await addRoles(interaction, PingRoles)

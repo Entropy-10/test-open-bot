@@ -27,6 +27,11 @@ const pingsSelectMenu = new StringSelectMenuBuilder()
 			description: 'Get pinged whenever we go live'
 		},
 		{
+			label: 'Socials',
+			value: 'social',
+			description: 'Get pinged for whenever we post to our socials accounts'
+		},
+		{
 			label: 'Giveaways',
 			value: 'giveaway',
 			description: 'Get pinged for giveaways'

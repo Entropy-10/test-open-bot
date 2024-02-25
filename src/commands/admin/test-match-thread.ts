@@ -1,5 +1,6 @@
 import env from '@env'
 import {
+	PermissionFlagsBits,
 	SlashCommandBuilder,
 	TextChannel,
 	ThreadAutoArchiveDuration
@@ -12,7 +13,8 @@ export default createCommand({
 	devOnly: true,
 	data: new SlashCommandBuilder()
 		.setName('test-match-thread')
-		.setDescription('Create a match thread for a TEST Tournament match.'),
+		.setDescription('Create a match thread for a TEST Tournament match.')
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute({ interaction }) {
 		const matchChannel = await interaction.guild?.channels.fetch(
 			env.MATCH_CHANNEL_ID

@@ -1,7 +1,7 @@
 import env from '@env'
 import { supabase } from '@supabase'
 import { channelFetch } from '@utils'
-import { SlashCommandBuilder } from 'discord.js'
+import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { createCommand, ephem } from 'zenith'
 
 import { panelEmbed, panelRow } from '~/components/looking-for-team'
@@ -10,7 +10,8 @@ export default createCommand({
 	permissions: ['Administrator'],
 	data: new SlashCommandBuilder()
 		.setName('setup-looking-for-team')
-		.setDescription('Setup the looking for team channel.'),
+		.setDescription('Setup the looking for team channel.')
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	execute: async ({ client: { logger }, interaction }) => {
 		const guild = interaction.guild
 		if (!guild) {
@@ -42,7 +43,7 @@ export default createCommand({
 		})
 
 		if (error) {
-			await message.delete().catch(err => logger.error(err))
+			await message.delete().catch((err) => logger.error(err))
 			return await interaction.reply(
 				ephem('Failed to send looking for team panel.')
 			)
