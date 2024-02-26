@@ -37,7 +37,7 @@ export default createEvent('interactionCreate', {
 			if (player) {
 				const existingPostMessage = await interaction.channel.messages
 					.fetch(player.message_id)
-					.catch(err => {
+					.catch((err) => {
 						postCreateError()
 						return logger.error(`Failed to fetch post message: ${err.message}`)
 					})
@@ -101,7 +101,7 @@ export default createEvent('interactionCreate', {
 		}
 
 		const osuApi = new LegacyClient(env.OSU_API_KEY)
-		const user = await osuApi.getUser({ u: osuProfile })
+		const user = await osuApi.getUser({ u: osuProfile, m: 'osu' })
 
 		if (!user) {
 			logger.error('Failed to get osu user.')
@@ -139,7 +139,7 @@ export default createEvent('interactionCreate', {
 		if (player) {
 			const existingPostMessage = await interaction.channel.messages
 				.fetch(player.message_id)
-				.catch(err => {
+				.catch((err) => {
 					postCreateError()
 					return logger.error(`Failed to fetch post message: ${err.message}`)
 				})
