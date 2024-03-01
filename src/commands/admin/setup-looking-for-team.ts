@@ -43,7 +43,7 @@ export default createCommand({
 		})
 
 		if (error) {
-			await message.delete().catch((err) => logger.error(err))
+			await message.delete().catch(err => logger.error(err))
 			return await interaction.reply(
 				ephem('Failed to send looking for team panel.')
 			)

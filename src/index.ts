@@ -13,6 +13,4 @@ const bot = new DiscordBot({
 	}
 })
 
-export const logger = bot.logger
-
 await bot.start()

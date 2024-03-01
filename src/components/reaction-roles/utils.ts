@@ -1,12 +1,11 @@
 import env from '@env'
 import { GuildMemberRoleManager } from 'discord.js'
-import { ephem } from 'zenith'
+import { Logger, ephem } from 'zenith'
 
 import {
 	allRolesRemovedEmbed,
 	createRoleEmbed
 } from '~/components/reaction-roles'
-import { logger } from '~/index'
 
 import type { EnvEnum } from '@types'
 import type { StringSelectMenuInteraction } from 'discord.js'
@@ -16,6 +15,8 @@ export interface RoleStatus {
 	status: 'success' | 'failed' | 'already-exists'
 	message?: string
 }
+
+const logger = new Logger()
 
 /**
  * Adds roles to a member.

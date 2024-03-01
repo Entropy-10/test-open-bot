@@ -11,9 +11,7 @@ import type { GuildTextBasedChannel, ModalSubmitInteraction } from 'discord.js'
 export default createCommand({
 	data: new SlashCommandBuilder()
 		.setName('ticket')
-		.setDescription(
-			'Report bugs or request features for our website or EclipseBot.'
-		)
+		.setDescription('Report bugs or request features for our website or bot.')
 		.addStringOption(option =>
 			option
 				.setName('application')
@@ -52,6 +50,15 @@ export default createCommand({
 		const ticketsChannel = interaction.guild?.channels.cache.get(
 			env.TICKET_CHANNEL
 		) as GuildTextBasedChannel
+
+		if (!ticketsChannel) {
+			return modalSubmit.reply(
+				ephem(
+					'Sorry, I failed to get the tickets channel. Please try again and see if that helps.'
+				)
+			)
+		}
+
 		const subject = modalSubmit.fields.getTextInputValue('subjectInput')
 		const description = modalSubmit.fields.getTextInputValue('descriptionInput')
 

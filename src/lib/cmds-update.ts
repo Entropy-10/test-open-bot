@@ -8,9 +8,10 @@ import type {
 	ApplicationCommand,
 	RESTPostAPIChatInputApplicationCommandsJSONBody
 } from 'discord.js'
+import type { Command } from './zenith/types'
 
-const dirname = import.meta.dir.replace('lib', '')
-const globalType = env.GLOBAL_PUSH ? 'global' : 'local'
+const dirname = import.meta.dir.replace('/lib', '')
+const environment = env.GLOBAL_PUSH ? 'global' : 'local'
 const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
 const logger = new Logger()
 
@@ -20,13 +21,13 @@ async function getCommands() {
 
 	for (const folder of cmdFolders) {
 		const cmdFiles = await readdir(`${cmdPath}/${folder}`)
-		const filteredCmdFiles = cmdFiles.filter(file => /\.ts$|\.js$/.test(file))
+		const filteredCmdFiles = cmdFiles.filter(file => /\.ts$/.test(file))
 
 		for (const file of filteredCmdFiles) {
 			const filePath = `${cmdPath}/${folder}/${file}`
-			const command = (await import(filePath)).default
+			const command = (await import(filePath)).default as Command | undefined
 
-			if (!command.data || !command.execute) {
+			if (!command?.data) {
 				logger.warn(`Invalid command at: ${filePath}`, 'high')
 				continue
 			}
@@ -37,26 +38,20 @@ async function getCommands() {
 	}
 }
 
-const rest = new REST().setToken(env.DISCORD_TOKEN)
+const rest = new REST().setToken(
+	env.GLOBAL_PUSH ? env.GLOBAL_DISCORD_TOKEN : env.DISCORD_TOKEN
+)
 
 async function deployCommands() {
-	logger.info(`deploying ${commands.length} commands to ${globalType}`, true)
+	logger.info(`deploying ${commands.length} commands to ${environment}`, true)
 
 	let deployData: ApplicationCommand[] = []
 
 	if (env.GLOBAL_PUSH) {
-		const guildData = (await rest.put(
-			Routes.applicationGuildCommands(env.CLIENT_ID, env.DEV_GUILD),
-			{ body: [] }
+		deployData = (await rest.put(
+			Routes.applicationCommands(env.GLOBAL_CLIENT_ID),
+			{ body: commands }
 		)) as ApplicationCommand[]
-
-		if (!guildData) {
-			return logger.error('aborting... failed to remove guild commands')
-		}
-
-		deployData = (await rest.put(Routes.applicationCommands(env.CLIENT_ID), {
-			body: commands
-		})) as ApplicationCommand[]
 	} else {
 		deployData = (await rest.put(
 			Routes.applicationGuildCommands(env.CLIENT_ID, env.DEV_GUILD),
@@ -65,15 +60,20 @@ async function deployCommands() {
 	}
 
 	if (deployData.length === 0) {
-		return logger.error(`failed to deploy commands to ${globalType}`)
+		return logger.error(`failed to deploy commands to ${environment}`)
 	}
 
-	logger.success(`deployed ${deployData.length} commands to ${globalType}`)
+	logger.success(`deployed ${deployData.length} commands to ${environment}`)
 }
 
 async function run() {
-	await getCommands()
-	await deployCommands()
+	try {
+		await getCommands()
+		await deployCommands()
+	} catch (err) {
+		if (err instanceof Error) return logger.error(err.message)
+		console.log(err)
+	}
 }
 
 run()

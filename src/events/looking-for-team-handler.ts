@@ -37,7 +37,7 @@ export default createEvent('interactionCreate', {
 			if (player) {
 				const existingPostMessage = await interaction.channel.messages
 					.fetch(player.message_id)
-					.catch((err) => {
+					.catch(err => {
 						postCreateError()
 						return logger.error(`Failed to fetch post message: ${err.message}`)
 					})
@@ -139,7 +139,7 @@ export default createEvent('interactionCreate', {
 		if (player) {
 			const existingPostMessage = await interaction.channel.messages
 				.fetch(player.message_id)
-				.catch((err) => {
+				.catch(err => {
 					postCreateError()
 					return logger.error(`Failed to fetch post message: ${err.message}`)
 				})

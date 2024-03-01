@@ -16,19 +16,19 @@ export default createCommand({
 		.setName('send-embed')
 		.setDescription('Used for sending basic description only embeds.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-		.addStringOption((option) =>
+		.addStringOption(option =>
 			option
 				.setName('title')
 				.setDescription('The title of the embed.')
 				.setRequired(true)
 		)
-		.addStringOption((option) =>
+		.addStringOption(option =>
 			option
 				.setName('content')
 				.setDescription('The content of the embed.')
 				.setRequired(true)
 		)
-		.addBooleanOption((option) =>
+		.addBooleanOption(option =>
 			option
 				.setName('modified-date')
 				.setDescription(

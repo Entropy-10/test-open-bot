@@ -151,6 +151,7 @@ export class DiscordBot extends Client {
 		let url: URL
 
 		try {
+			// @ts-expect-error wtf moment
 			url = new URL(monitorUrl)
 		} catch (err) {
 			this._handleError(err, 'Invalid monitoring url')
@@ -199,7 +200,7 @@ export class DiscordBot extends Client {
 				})
 			})
 
-			const cmdFiles = files.filter(file => /\.ts$|\.js$/.test(file))
+			const cmdFiles = files.filter(file => /\.ts$/.test(file))
 
 			for (const file of cmdFiles) {
 				const filePath = `${cmdPath}/${folder}/${file}`
@@ -231,7 +232,7 @@ export class DiscordBot extends Client {
 			}
 		}
 
-		const eventFiles = files.filter(file => /\.ts$|\.js$/.test(file))
+		const eventFiles = files.filter(file => /\.ts$/.test(file))
 
 		for (const file of eventFiles) {
 			const filePath = `${eventsPath}/${file}`
