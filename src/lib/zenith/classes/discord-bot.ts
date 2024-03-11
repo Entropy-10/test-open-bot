@@ -3,8 +3,8 @@ import { Client, Collection } from 'discord.js'
 
 import { Logger } from '..'
 import { ZenithErrorCodes } from '../types'
-import { interactionHandler } from '../utils/interactionHandler'
-import { ZenithError } from './ZenithErrorClass'
+import { interactionHandler } from '../utils/interaction-handler'
+import { ZenithError } from './zenith-error'
 
 import type { ClientEvents } from 'discord.js'
 import type {

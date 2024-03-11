@@ -1,2 +1,2 @@
-export * from '~/components/status/serviceEmbed'
-export * from '~/components/status/servicesEmbed'
+export * from '~/components/status/service-embed'
+export * from '~/components/status/services-embed'

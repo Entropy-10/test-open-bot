@@ -38,6 +38,8 @@ const envSchema = object({
 	OSU_API_KEY: string([fromEnv()]),
 	GOOGLE_SERVICE_ACCOUNT_EMAIL: string([fromEnv()]),
 	GOOGLE_PRIVATE_KEY: string([fromEnv()]),
+	ADMIN_SHEET_ID: string([fromEnv()]),
+	QUAL_SCHEDULE_SHEET: string([fromEnv()]),
 	LOOKING_FOR_TEAM_CHANNEL: string([fromEnv()]),
 	UNVERIFIED_ROLE: string([fromEnv()]),
 	OPERATIONAL_EMOJI: string([fromEnv()]),

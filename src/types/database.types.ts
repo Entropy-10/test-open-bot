@@ -105,27 +105,6 @@ export type Database = {
 				}
 				Relationships: []
 			}
-			'looking-for-team-post': {
-				Row: {
-					created_at: string
-					message_id: string
-					updated_at: string
-					user_id: string
-				}
-				Insert: {
-					created_at?: string
-					message_id: string
-					updated_at?: string
-					user_id: string
-				}
-				Update: {
-					created_at?: string
-					message_id?: string
-					updated_at?: string
-					user_id?: string
-				}
-				Relationships: []
-			}
 			players: {
 				Row: {
 					created_at: string
@@ -203,6 +182,7 @@ export type Database = {
 					created_at: string
 					discord_access_token: string
 					discord_refresh_token: string
+					old: boolean
 					osu_access_token: string
 					osu_id: string
 					osu_refresh_token: string
@@ -211,6 +191,7 @@ export type Database = {
 					created_at?: string
 					discord_access_token: string
 					discord_refresh_token: string
+					old?: boolean
 					osu_access_token: string
 					osu_id: string
 					osu_refresh_token: string
@@ -219,6 +200,7 @@ export type Database = {
 					created_at?: string
 					discord_access_token?: string
 					discord_refresh_token?: string
+					old?: boolean
 					osu_access_token?: string
 					osu_id?: string
 					osu_refresh_token?: string

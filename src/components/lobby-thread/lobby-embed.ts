@@ -1,7 +1,7 @@
 import { embedColor } from '@utils'
 import { EmbedBuilder } from 'discord.js'
 
-export const matchEmbed = new EmbedBuilder()
+export const lobbyEmbed = new EmbedBuilder()
 	.setTitle('RO32: Team 1 vs Team 2')
 	.setColor(embedColor)
 	.setDescription(

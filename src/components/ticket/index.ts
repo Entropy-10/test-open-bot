@@ -1,2 +1,2 @@
-export * from '~/components/ticket/ticketButtons'
-export * from '~/components/ticket/ticketModal'
+export * from '~/components/ticket/ticket-buttons'
+export * from '~/components/ticket/ticket-modal'
