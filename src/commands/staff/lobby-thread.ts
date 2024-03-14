@@ -77,8 +77,7 @@ export default createCommand({
 
 		if (successfulIds.length > 0) {
 			await lobbyThread.send(
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
-				`This lobby starts at ${time(new Date)} \n${successfulIds.join('')}`
+				`This lobby starts at ${time(new Date())} \n${successfulIds.join('')}`
 			)
 		}
 

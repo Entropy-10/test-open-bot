@@ -14,7 +14,6 @@
 				"noUnusedImports": "warn"
 			},
 			"style": {
-				"useForOf": "warn",
 				"useLiteralEnumMembers": "off",
 				"useConsistentArrayType": {
 					"level": "error",
