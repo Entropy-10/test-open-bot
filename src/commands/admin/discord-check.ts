@@ -1,5 +1,5 @@
 import env from '@env'
-import { getDocument } from '@sheets'
+import { sheetsClient } from '@sheets'
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { createCommand, ephem } from 'zenith'
 
@@ -11,7 +11,7 @@ export default createCommand({
 			'Checks if the currently registered players are in the discord server.'
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-	async execute({ interaction, client }) {
+	async execute({ interaction, client: { logger } }) {
 		await interaction.deferReply({ ephemeral: true })
 
 		const members = (await interaction.guild?.members.fetch())?.map(
@@ -22,24 +22,44 @@ export default createCommand({
 			return await interaction.editReply(ephem('Failed to get guild members.'))
 		}
 
-		const adminDoc = await getDocument(env.ADMIN_SHEET_ID)
-		const apiSheet = adminDoc.sheetsByTitle.api
+		const rawSheetData = await sheetsClient.spreadsheets.values.get({
+			spreadsheetId: env.ADMIN_SHEET_ID,
+			range: 'api!C3:L300'
+		})
 
-		const rows = await apiSheet.getRows({ offset: 2, limit: 500 })
-
-		for (let i = 0; i < rows.length; i++) {
-			const { osu_id, osu_name, discord } = rows[i].toObject()
-			if (!osu_name || !members.includes(osu_name) || discord === 'TRUE') {
-				continue
-			}
-
-			rows[i].assign({
-				osu_name: `=HYPERLINK("https://osu.ppy.sh/users/${osu_id}","${osu_name}")`,
-				discord: 'TRUE'
-			})
-			await rows[i].save()
+		if (!rawSheetData || !rawSheetData.data.values) {
+			return await interaction.editReply(ephem('Failed to get sheet data.'))
 		}
 
-		await interaction.editReply('checked!')
+		const apiSheetUsers = rawSheetData.data.values
+			.map(row => ({
+				osuName: row[0],
+				inDiscord: row[9]
+			}))
+			.filter(user => user.osuName !== '')
+
+		const updatedValues: string[] = []
+		for (const user of apiSheetUsers) {
+			if (members.includes(user.osuName)) updatedValues.push('TRUE')
+			else updatedValues.push('FALSE')
+		}
+
+		try {
+			await sheetsClient.spreadsheets.values.update({
+				spreadsheetId: env.ADMIN_SHEET_ID,
+				range: `api!L3:L${updatedValues.length + 3}`,
+				valueInputOption: 'USER_ENTERED',
+				requestBody: {
+					range: `api!L3:L${updatedValues.length + 3}`,
+					values: [updatedValues],
+					majorDimension: 'COLUMNS'
+				}
+			})
+		} catch (err) {
+			if (err instanceof Error) logger.error(err.message)
+			return await interaction.editReply(ephem('Failed to update sheet.'))
+		}
+
+		await interaction.editReply('Users checked and sheet updated!')
 	}
 })
