@@ -27,7 +27,7 @@ export default createCommand({
 			range: 'api!C3:L300'
 		})
 
-		if (!rawSheetData || !rawSheetData.data.values) {
+		if (!rawSheetData.data.values) {
 			return await interaction.editReply(ephem('Failed to get sheet data.'))
 		}
 

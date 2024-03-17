@@ -160,10 +160,10 @@ export class DiscordBot extends Client {
 		setInterval(
 			async () => {
 				/* 
-				Attempts to send monitoring request up to 5 times
-				with a 10 second delay between each attempt during
-				the interval. if it fails after 5 attempts, throw the error
-			*/
+					Attempts to send monitoring request up to 5 times
+					with a 10 second delay between each attempt during
+					the interval. if it fails after 5 attempts, throw the error
+				*/
 				try {
 					for (let attempt = 0; attempt < 5; attempt++) {
 						try {

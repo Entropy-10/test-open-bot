@@ -78,8 +78,6 @@ export async function channelFetch(guild: Guild, id: string) {
  * @param {Mention} [type='user'] - The optional type of mention to be created. By default is user.
  */
 export function mention(id: string, type?: 'channel' | 'role' | 'user') {
-	if (!isProd) return id
-
 	switch (type) {
 		case 'channel':
 			return channelMention(id)

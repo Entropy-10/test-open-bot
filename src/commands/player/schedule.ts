@@ -46,7 +46,7 @@ export default createCommand({
 
 		try {
 			const adminDoc = await getDocument(env.ADMIN_SHEET_ID)
-			const scheduleSheet = adminDoc.sheetsByTitle[env.QUAL_SCHEDULE_SHEET]
+			const scheduleSheet = adminDoc.sheetsByTitle.qScheduler
 			const range = (await scheduleSheet.getCellsInRange(
 				'B4:M27'
 			)) as string[][]

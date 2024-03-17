@@ -1,18 +1,15 @@
 import env from '@env'
 import { getDocument } from '@sheets'
+import { channelFetch, mention } from '@utils'
 import {
-	ChannelType,
 	SlashCommandBuilder,
 	TextChannel,
-	ThreadAutoArchiveDuration,
-	messageLink,
-	time
+	ThreadAutoArchiveDuration
 } from 'discord.js'
 import { createCommand, ephem } from 'zenith'
-import { lobbyEmbed } from '~/components/lobby-thread'
+import { createLobbyEmbed } from '~/components/lobby-thread'
 
 export default createCommand({
-	devOnly: true,
 	cooldown: 5,
 	data: new SlashCommandBuilder()
 		.setName('lobby-thread')
@@ -28,7 +25,14 @@ export default createCommand({
 	async execute({ interaction }) {
 		await interaction.deferReply({ ephemeral: true })
 
-		const matchChannel = interaction.channel
+		if (!interaction.guild) {
+			return await interaction.editReply(ephem('Failed to get guild.'))
+		}
+
+		const matchChannel = await channelFetch(
+			interaction.guild,
+			env.MATCH_CHANNEL_ID
+		)
 		const lobbyId = interaction.options.getInteger('id')
 
 		if (!lobbyId) return await interaction.reply(ephem('Invalid lobby id.'))
@@ -38,7 +42,22 @@ export default createCommand({
 		}
 
 		const adminDoc = await getDocument(env.ADMIN_SHEET_ID)
-		const scheduleSheet = adminDoc.sheetsByTitle[env.QUAL_SCHEDULE_SHEET]
+		const qualsRefDoc = await getDocument(env.QUALS_REF_SHEET_ID)
+
+		const scheduleSheet = adminDoc.sheetsByTitle.qScheduler
+		const lobbySheet = qualsRefDoc.sheetsByTitle[lobbyId]
+
+		if (!lobbySheet) {
+			return await interaction.editReply(
+				ephem('This lobby seems to not exist on the referee sheet.')
+			)
+		}
+
+		await lobbySheet.loadCells('C6')
+
+		const lobbyPassword = (await lobbySheet.getCellByA1('C6')).value as
+			| string
+			| undefined
 		const lobbyRow = (
 			await scheduleSheet.getRows<LobbyRow>({
 				limit: 1,
@@ -46,57 +65,36 @@ export default createCommand({
 			})
 		)[0].toObject()
 
-		//console.log(Object.values(lobbyRow).slice(-5))
-
 		const lobbyThread = await matchChannel.threads.create({
 			name: `TEST: Qualifier Lobby ${lobbyId}`,
-			autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
-			type: ChannelType.PrivateThread,
-			invitable: false
+			autoArchiveDuration: ThreadAutoArchiveDuration.OneDay
 		})
 
 		await lobbyThread.join()
-		const threadMessage = await lobbyThread.send({ embeds: [lobbyEmbed] })
-		await matchChannel.send(messageLink(lobbyThread.id, threadMessage.id))
+		await lobbyThread.send({
+			embeds: [
+				createLobbyEmbed(
+					lobbyId,
+					mention(lobbyRow.discord_ids?.split(',')[0] ?? ''),
+					new Date((Number(lobbyRow.time) + 3600) * 1000),
+					lobbyPassword
+				)
+			]
+		})
 
-		await interaction.editReply(
-			ephem(
-				"Match thread created. Please note that I'm still inviting players in the background, I will notify you once I finish."
-			)
-		)
+		const mentions = lobbyRow.discord_ids
+			?.split(',')
+			.map(id => mention(id))
+			.join(' ')
 
-		if (!lobbyRow.discord_ids) return console.log('No Ids')
+		mentions && (await lobbyThread.send(mentions))
 
-		const addMemberResponse = await Promise.allSettled(
-			lobbyRow.discord_ids.split(',').map(id => lobbyThread.members.add(id))
-		)
-
-		const successfulIds = addMemberResponse
-			.map(response => response.status === 'fulfilled' && response.value)
-			.filter(id => id !== false)
-
-		if (successfulIds.length > 0) {
-			await lobbyThread.send(
-				`This lobby starts at ${time(new Date())} \n${successfulIds.join('')}`
-			)
-		}
-
-		return await interaction.editReply(ephem('Match thread created.'))
+		return await interaction.editReply(ephem('Lobby thread created.'))
 	}
 })
 
 interface LobbyRow {
 	id: string
-	date: string
 	time: string
-	status: string
 	discord_ids: string
-	mp_link: string
-	notes: string
-	referee: string
-	team1: string
-	team2: string
-	team3: string
-	team4: string
-	team5: string
 }

@@ -1,32 +1,32 @@
 {
-  "name": "test-open-bot",
-  "module": "src/index.ts",
-  "type": "module",
-  "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "start": "bun src/index.ts",
-    "format": "biome format --write ./",
-    "lint": "biome lint ./",
-    "types": "tsc --pretty --noEmit",
-    "review": "bun biome check --apply ./ && bun types",
-    "cmds:update": "bun src/lib/cmds-update.ts",
-    "db:types": "supabase gen types typescript --project-id dtoyeiqtecliyympsgji > src/types/database.types.ts"
-  },
-  "dependencies": {
-    "@googleapis/sheets": "^5.0.5",
-    "@supabase/supabase-js": "^2.39.7",
-    "chalk": "^5.3.0",
-    "dayjs": "^1.11.10",
-    "discord.js": "^14.14.1",
-    "google-auth-library": "^9.6.3",
-    "google-spreadsheet": "^4.1.1",
-    "osu-web.js": "^2.3.0",
-    "valibot": "^0.20.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^1.6.0",
-    "@types/bun": "^1.0.8",
-    "supabase": "^1.148.6",
-    "typescript": "^5.4.2"
-  }
+	"name": "test-open-bot",
+	"module": "src/index.ts",
+	"type": "module",
+	"scripts": {
+		"dev": "bun --watch src/index.ts",
+		"start": "bun src/index.ts",
+		"format": "biome format --write ./",
+		"lint": "biome lint ./",
+		"types": "tsc --pretty --noEmit",
+		"review": "bun biome check --apply ./ && bun types",
+		"cmds:update": "bun src/lib/cmds-update.ts",
+		"db:types": "supabase gen types typescript --project-id dtoyeiqtecliyympsgji > src/types/database.types.ts"
+	},
+	"dependencies": {
+		"@googleapis/sheets": "^5.0.5",
+		"@supabase/supabase-js": "^2.39.7",
+		"chalk": "^5.3.0",
+		"dayjs": "^1.11.10",
+		"discord.js": "^14.14.1",
+		"google-auth-library": "^9.6.3",
+		"google-spreadsheet": "^4.1.1",
+		"osu-web.js": "^2.3.0",
+		"valibot": "^0.20.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.6.0",
+		"@types/bun": "^1.0.8",
+		"supabase": "^1.148.6",
+		"typescript": "^5.4.2"
+	}
 }
