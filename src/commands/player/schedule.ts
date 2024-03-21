@@ -5,7 +5,6 @@ import { SlashCommandBuilder } from 'discord.js'
 import { createCommand, ephem } from 'zenith'
 
 export default createCommand({
-	devOnly: true,
 	data: new SlashCommandBuilder()
 		.setName('schedule')
 		.setDescription('Used for scheduling qualifier lobbies.')
@@ -18,7 +17,25 @@ export default createCommand({
 				.setRequired(true)
 		),
 	async execute({ interaction }) {
-		await interaction.deferReply()
+		await interaction.deferReply({ ephemeral: true })
+
+		const { data: settings } = await supabase
+			.from('bot-settings')
+			.select('*')
+			.eq('guild_id', String(interaction.guildId))
+			.maybeSingle()
+
+		if (!settings) {
+			return await interaction.editReply(ephem('Failed to get guild settings.'))
+		}
+
+		if (!settings.allow_schedules) {
+			return await interaction.editReply(
+				ephem(
+					'Sorry, but schedules are currently locked. Please reach out to the hosts or admins if additional help is needed.'
+				)
+			)
+		}
 
 		const { data: teamData } = await supabase
 			.from('users')
@@ -44,55 +61,74 @@ export default createCommand({
 			)
 		}
 
-		try {
-			const adminDoc = await getDocument(env.ADMIN_SHEET_ID)
-			const scheduleSheet = adminDoc.sheetsByTitle.qScheduler
-			const range = (await scheduleSheet.getCellsInRange(
-				'B4:M27'
-			)) as string[][]
-			const rowOffset = lobbyId - 1
-			const row = range[rowOffset]
+		const refDoc = await getDocument(env.QUALS_REF_SHEET_ID)
+		const scheduleSheet = refDoc.sheetsByTitle.schedule
+		const teamListing = refDoc.sheetsByTitle.teams
 
-			if (!row[3].endsWith('filled.')) {
-				return await interaction.editReply(
-					ephem(
-						'Sorry, but this lobby is either full, in progress, or completed. Please try another lobby.'
-					)
-				)
-			}
+		const discordTags = (await teamListing.getCellsInRange(
+			'B7:D204'
+		)) as string[][]
 
-			const existingLobby = range.find(row => row.includes(team.name))
+		const teamName = discordTags.find(
+			row => row[2] === interaction.user.username
+		)?.[0]
 
-			await scheduleSheet.loadCells('B4:M27')
-
-			function setSlot(offset: number, value: string) {
-				let columnOffset = 0
-				for (let i = 1; i <= 5; i++) {
-					if (row[i + 7] === undefined) {
-						columnOffset = i + 7
-						break
-					}
-				}
-				const slotCell = scheduleSheet.getCell(offset + 3, columnOffset)
-				slotCell.value = value
-			}
-
-			if (!existingLobby) {
-				setSlot(rowOffset, team.name)
-				await scheduleSheet.saveUpdatedCells()
-			} else {
-				setSlot(Number(existingLobby[0]) - 1, '')
-				setSlot(rowOffset, team.name)
-				await scheduleSheet.saveUpdatedCells()
-			}
-
-			return await interaction.editReply(`Lobby ${lobbyId} scheduled!`)
-		} catch (err) {
+		if (!teamName) {
 			return await interaction.editReply(
-				ephem(
-					'Sorry, something went wrong while scheduling! Please try again and see if that helps.'
-				)
+				ephem('Sorry, but I could not find your team.')
 			)
 		}
+
+		await scheduleSheet.loadCells('I3:K28')
+		const teamsRange = (await scheduleSheet.getCellsInRange(
+			'I3:K27'
+		)) as string[][]
+
+		const lobbyRow = teamsRange[lobbyId - 1]
+		let lobbyIndex = lobbyRow.findIndex(team => team === '')
+
+		if (lobbyIndex === -1) {
+			if (lobbyRow.length === 0) lobbyIndex = 0
+			else if (lobbyRow.length === 2) lobbyIndex = 2
+			else lobbyIndex = -1
+		}
+
+		if (lobbyIndex < 0) {
+			return await interaction.editReply(
+				'Sorry, but this lobby is full. Please try a different lobby.'
+			)
+		}
+
+		const rowOffset = 2
+		const columnOffset = 8
+
+		let existingTeam = { row: 0, column: 0 }
+		teamsRange.find((lobby, index) => {
+			if (lobby.includes(teamName))
+				existingTeam = {
+					row: index + rowOffset,
+					column: lobby.findIndex(team => team === teamName) + columnOffset
+				}
+		})
+
+		if (existingTeam.row !== 0) {
+			const oldLobby = scheduleSheet.getCell(
+				existingTeam.row,
+				existingTeam.column
+			)
+			oldLobby.value = ''
+		}
+
+		const newLobby = scheduleSheet.getCell(
+			lobbyId - 1 + rowOffset,
+			lobbyIndex + columnOffset
+		)
+		newLobby.value = teamName
+
+		await scheduleSheet.saveUpdatedCells()
+
+		await interaction.editReply(
+			ephem(`You are now scheduled to play in lobby ${lobbyId}.`)
+		)
 	}
 })
